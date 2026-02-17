@@ -1,50 +1,53 @@
 <?php
- /**
+/**
  * NOTICE OF LICENSE
  *
- * This source file is subject to the HRSALE License
+ * This source file is subject to the HRMX-DASHANDOTS License
  * that is bundled with this package in the file license.txt.
  * It is also available through the world-wide-web at this URL:
- * http://www.hrsale.com/license.txt
+ * http://www.hrm.dashandots.com/license.txt
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
- * to hrsalesoft@gmail.com so we can send you a copy immediately.
+ * to info@dashandots.com so we can send you a copy immediately.
  *
- * @author   HRSALE
- * @author-email  hrsalesoft@gmail.com
+ * @author   HRMX-DASHANDOTS
+ * @author-email  info@dashandots.com
  * @copyright  Copyright © hrsale.com. All Rights Reserved
  */
-if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+if (!defined('BASEPATH'))
+	exit('No direct script access allowed');
 
 class Invoices extends MY_Controller
 {
 
-   /*Function to set JSON output*/
-	public function output($Return=array()){
+	/*Function to set JSON output*/
+	public function output($Return = array())
+	{
 		/*Set response header*/
 		header("Access-Control-Allow-Origin: *");
 		header("Content-Type: application/json; charset=UTF-8");
 		/*Final JSON response*/
 		exit(json_encode($Return));
 	}
-	
+
 	public function __construct()
-     {
-          parent::__construct();
-          //load the login model
-          $this->load->model('Company_model');
-		  $this->load->model('Xin_model');
-		  $this->load->model("Project_model");
-		  $this->load->model("Tax_model");
-		  $this->load->model("Invoices_model");
-		  $this->load->model("Clients_model");
-     }
-	 
+	{
+		parent::__construct();
+		//load the login model
+		$this->load->model('Company_model');
+		$this->load->model('Xin_model');
+		$this->load->model("Project_model");
+		$this->load->model("Tax_model");
+		$this->load->model("Invoices_model");
+		$this->load->model("Clients_model");
+	}
+
 	// invoices page
-	public function index() {
-	
+	public function index()
+	{
+
 		$session = $this->session->userdata('client_username');
-		if(empty($session)){ 
+		if (empty($session)) {
 			redirect('client/');
 		}
 		$data['title'] = $this->lang->line('xin_invoices_title');
@@ -56,49 +59,51 @@ class Invoices extends MY_Controller
 		$this->load->view('client/layout/layout_main', $data); //page load
 	}
 	// invoice payments page
-	public function payments_history() {
-	
+	public function payments_history()
+	{
+
 		$session = $this->session->userdata('client_username');
-		if(empty($session)){
+		if (empty($session)) {
 			redirect('client/');
 		}
-		$data['title'] = $this->lang->line('xin_acc_invoice_payments').' | '.$this->Xin_model->site_title();
+		$data['title'] = $this->lang->line('xin_acc_invoice_payments') . ' | ' . $this->Xin_model->site_title();
 		$data['breadcrumbs'] = $this->lang->line('xin_acc_invoice_payments');
 		$data['path_url'] = 'xin_invoice_payment';
-		if(!empty($session)){ 
+		if (!empty($session)) {
 			$data['subview'] = $this->load->view("client/invoices/invoice_payment_list", $data, TRUE);
 			$this->load->view('client/layout/layout_main', $data); //page load
 		} else {
 			redirect('client/');
 		}
 	}
-	
+
 	// view invoice page
-	public function view() {
-	
+	public function view()
+	{
+
 		$session = $this->session->userdata('client_username');
-		if(empty($session)){ 
+		if (empty($session)) {
 			redirect('client/');
 		}
-		
+
 		$data['title'] = $this->Xin_model->site_title();
-		
+
 		$invoice_id = $this->uri->segment(4);
 		$invoice_info = $this->Invoices_model->read_invoice_info($invoice_id);
-		if(is_null($invoice_info)){
+		if (is_null($invoice_info)) {
 			redirect('client/invoices');
 		}
 		// get project
 		$project = $this->Project_model->read_project_information($invoice_info[0]->project_id);
 		// get country
-	//	$country = $this->Xin_model->read_country_info($supplier[0]->country_id);
+		//	$country = $this->Xin_model->read_country_info($supplier[0]->country_id);
 		// get company info
 		$company = $this->Xin_model->read_company_setting_info(1);
 		// get company > country info
 		$ccountry = $this->Xin_model->read_country_info($company[0]->country);
-		
+
 		$data = array(
-			'title' => 'View Invoice #'.$invoice_info[0]->invoice_id,
+			'title' => 'View Invoice #' . $invoice_info[0]->invoice_id,
 			'breadcrumbs' => 'View Invoice',
 			'path_url' => 'create_hrsale_invoice',
 			'invoice_id' => $invoice_info[0]->invoice_id,
@@ -134,43 +139,44 @@ class Invoices extends MY_Controller
 			'countryid' => $invoice_info[0]->countryid,
 			'all_projects' => $this->Project_model->get_projects(),
 			'all_taxes' => $this->Tax_model->get_all_taxes(),
-		//	'product_for_purchase_invoice' => $this->Products_model->product_for_purchase_invoice(),
-		//	'all_taxes' => $this->Products_model->get_taxes()
-			);
+			//	'product_for_purchase_invoice' => $this->Products_model->product_for_purchase_invoice(),
+			//	'all_taxes' => $this->Products_model->get_taxes()
+		);
 		//if(in_array('3',$role_resources_ids)) {
-			$data['subview'] = $this->load->view("client/invoices/invoice_view", $data, TRUE);
-			$this->load->view('client/layout/layout_main', $data); //page load			
+		$data['subview'] = $this->load->view("client/invoices/invoice_view", $data, TRUE);
+		$this->load->view('client/layout/layout_main', $data); //page load			
 		//} else {
 		//	redirect('admin/dashboard/');
 		//}		  
-     }
-	 
-	 // preview invoice page
-	public function preview() {
-	
+	}
+
+	// preview invoice page
+	public function preview()
+	{
+
 		$session = $this->session->userdata('client_username');
-		if(empty($session)){ 
+		if (empty($session)) {
 			redirect('client/');
 		}
-		
+
 		$data['title'] = $this->Xin_model->site_title();
-		
+
 		$invoice_id = $this->uri->segment(4);
 		$invoice_info = $this->Invoices_model->read_invoice_info($invoice_id);
-		if(is_null($invoice_info)){
+		if (is_null($invoice_info)) {
 			redirect('client/invoices');
 		}
 		// get project
 		$project = $this->Project_model->read_project_information($invoice_info[0]->project_id);
 		// get country
-	//	$country = $this->Xin_model->read_country_info($supplier[0]->country_id);
+		//	$country = $this->Xin_model->read_country_info($supplier[0]->country_id);
 		// get company info
 		$company = $this->Xin_model->read_company_setting_info(1);
 		// get company > country info
 		$ccountry = $this->Xin_model->read_country_info($company[0]->country);
-		
+
 		$data = array(
-			'title' => 'View Invoice #'.$invoice_info[0]->invoice_id,
+			'title' => 'View Invoice #' . $invoice_info[0]->invoice_id,
 			'breadcrumbs' => 'View Invoice',
 			'path_url' => 'log',
 			'invoice_id' => $invoice_info[0]->invoice_id,
@@ -206,27 +212,27 @@ class Invoices extends MY_Controller
 			'countryid' => $invoice_info[0]->countryid,
 			'all_projects' => $this->Project_model->get_projects(),
 			'all_taxes' => $this->Tax_model->get_all_taxes(),
-		//	'product_for_purchase_invoice' => $this->Products_model->product_for_purchase_invoice(),
-		//	'all_taxes' => $this->Products_model->get_taxes()
-			);
-			//if(in_array('3',$role_resources_ids)) {
-			$data['subview'] = $this->load->view("client/invoices/invoice_preview", $data, TRUE);
-			$this->load->view('client/layout/pre_layout_main', $data); //page load			
+			//	'product_for_purchase_invoice' => $this->Products_model->product_for_purchase_invoice(),
+			//	'all_taxes' => $this->Products_model->get_taxes()
+		);
+		//if(in_array('3',$role_resources_ids)) {
+		$data['subview'] = $this->load->view("client/invoices/invoice_preview", $data, TRUE);
+		$this->load->view('client/layout/pre_layout_main', $data); //page load			
 		//} else {
 		//	redirect('admin/dashboard/');
 		//}		  
-     }
-	 
+	}
+
 	// invoice payment list
 	public function invoice_payment_list()
-     {
+	{
 
 		$session = $this->session->userdata('client_username');
-		if(empty($session)){ 
+		if (empty($session)) {
 			redirect('client/');
 		}
 		$data['title'] = $this->Xin_model->site_title();
-		if(!empty($session)){ 
+		if (!empty($session)) {
 			$this->load->view("client/invoices/invoice_payment_list", $data);
 		} else {
 			redirect('client/');
@@ -235,34 +241,34 @@ class Invoices extends MY_Controller
 		$draw = intval($this->input->get("draw"));
 		$start = intval($this->input->get("start"));
 		$length = intval($this->input->get("length"));
-		
-		
+
+
 		$transaction = $this->Invoices_model->get_client_payment_invoices($session['client_id']);
 		$data = array();
 		$balance2 = 0;
-          foreach($transaction->result() as $r) {
-			  
+		foreach ($transaction->result() as $r) {
+
 			// transaction date
 			$transaction_date = $this->Xin_model->set_date_format($r->transaction_date);
 			// get currency
 			$total_amount = $this->Xin_model->currency_sign($r->amount);
 			// credit
-			$cr_dr = $r->dr_cr=="dr" ? "Debit" : "Credit";
-			
+			$cr_dr = $r->dr_cr == "dr" ? "Debit" : "Credit";
+
 			$invoice_info = $this->Invoices_model->read_invoice_info($r->invoice_id);
-			if(!is_null($invoice_info)){
+			if (!is_null($invoice_info)) {
 				$inv_no = $invoice_info[0]->invoice_number;
 			} else {
-				$inv_no = '--';	
+				$inv_no = '--';
 			}
 			// payment method 
 			$payment_method = $this->Xin_model->read_payment_method($r->payment_method_id);
-			if(!is_null($payment_method)){
+			if (!is_null($payment_method)) {
 				$method_name = $payment_method[0]->method_name;
 			} else {
-				$method_name = '--';	
-			}	
-			$invoice_number = '<a href="'.site_url().'client/invoices/view/'.$r->invoice_id.'/">'.$inv_no.'</a>';					
+				$method_name = '--';
+			}
+			$invoice_number = '<a href="' . site_url() . 'client/invoices/view/' . $r->invoice_id . '/">' . $inv_no . '</a>';
 			$data[] = array(
 				$invoice_number,
 				$transaction_date,
@@ -270,22 +276,23 @@ class Invoices extends MY_Controller
 				$method_name,
 				$r->description
 			);
-		  }
+		}
 
-          $output = array(
-               "draw" => $draw,
-                 "recordsTotal" => $transaction->num_rows(),
-                 "recordsFiltered" => $transaction->num_rows(),
-                 "data" => $data
-            );
-          echo json_encode($output);
-          exit();
-     }
-	 public function invoices_list() {
+		$output = array(
+			"draw" => $draw,
+			"recordsTotal" => $transaction->num_rows(),
+			"recordsFiltered" => $transaction->num_rows(),
+			"data" => $data
+		);
+		echo json_encode($output);
+		exit();
+	}
+	public function invoices_list()
+	{
 
 		$data['title'] = $this->Xin_model->site_title();
 		$session = $this->session->userdata('client_username');
-		if(!empty($session)){ 
+		if (!empty($session)) {
 			$this->load->view("client/invoices/invoices_list", $data);
 		} else {
 			redirect('client/');
@@ -294,35 +301,35 @@ class Invoices extends MY_Controller
 		$draw = intval($this->input->get("draw"));
 		$start = intval($this->input->get("start"));
 		$length = intval($this->input->get("length"));
-		
-		
+
+
 		$client = $this->Invoices_model->get_client_invoices($session['client_id']);
-		
+
 		$data = array();
 
-          foreach($client->result() as $r) {
-			  
+		foreach ($client->result() as $r) {
+
 			// get country
 			$grand_total = $this->Xin_model->currency_sign($r->grand_total);
 			// get project
-			$project = $this->Project_model->read_project_information($r->project_id); 
-			if(!is_null($project)){
+			$project = $this->Project_model->read_project_information($r->project_id);
+			if (!is_null($project)) {
 				$project_name = $project[0]->title;
 			} else {
 				$project_name = '--';
 			}
-			if($r->status == 0){
-				$istatus = '<span class="label label-danger">'.$this->lang->line('xin_payroll_unpaid').'</span>';
+			if ($r->status == 0) {
+				$istatus = '<span class="label label-danger">' . $this->lang->line('xin_payroll_unpaid') . '</span>';
 			} else {
-				$istatus = '<span class="label label-success">'.$this->lang->line('xin_payment_paid').'</span>';
+				$istatus = '<span class="label label-success">' . $this->lang->line('xin_payment_paid') . '</span>';
 			}
-			 
-		  $invoice_date = '<i class="far fa-calendar-alt position-left"></i> '.$this->Xin_model->set_date_format($r->invoice_date);
-		  $invoice_due_date = '<i class="far fa-calendar-alt position-left"></i> '.$this->Xin_model->set_date_format($r->invoice_due_date);
-		  //invoice_number
-		  $invoice_number = '<a href="'.site_url().'client/invoices/view/'.$r->invoice_id.'/">'.$r->invoice_number.'</a>';
-		   $data[] = array(
-				'<span data-toggle="tooltip" data-placement="top" title="'.$this->lang->line('xin_view').'"><a href="'.site_url().'client/invoices/view/'.$r->invoice_id.'/"><button type="button" class="btn icon-btn btn-xs btn-outline-info waves-effect waves-light""><span class="fa fa-arrow-circle-right"></span></button></a></span>',
+
+			$invoice_date = '<i class="far fa-calendar-alt position-left"></i> ' . $this->Xin_model->set_date_format($r->invoice_date);
+			$invoice_due_date = '<i class="far fa-calendar-alt position-left"></i> ' . $this->Xin_model->set_date_format($r->invoice_due_date);
+			//invoice_number
+			$invoice_number = '<a href="' . site_url() . 'client/invoices/view/' . $r->invoice_id . '/">' . $r->invoice_number . '</a>';
+			$data[] = array(
+				'<span data-toggle="tooltip" data-placement="top" title="' . $this->lang->line('xin_view') . '"><a href="' . site_url() . 'client/invoices/view/' . $r->invoice_id . '/"><button type="button" class="btn icon-btn btn-xs btn-outline-info waves-effect waves-light""><span class="fa fa-arrow-circle-right"></span></button></a></span>',
 				$r->invoice_id,
 				$invoice_number,
 				$project_name,
@@ -330,17 +337,17 @@ class Invoices extends MY_Controller
 				$invoice_date,
 				$invoice_due_date,
 				$istatus,
-		   );
-          }
+			);
+		}
 
-          $output = array(
-               "draw" => $draw,
-                 "recordsTotal" => $client->num_rows(),
-                 "recordsFiltered" => $client->num_rows(),
-                 "data" => $data
-            );
-          echo json_encode($output);
-          exit();
-     }
-} 
+		$output = array(
+			"draw" => $draw,
+			"recordsTotal" => $client->num_rows(),
+			"recordsFiltered" => $client->num_rows(),
+			"data" => $data
+		);
+		echo json_encode($output);
+		exit();
+	}
+}
 ?>

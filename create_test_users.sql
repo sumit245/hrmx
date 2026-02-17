@@ -19,7 +19,6 @@ INSERT INTO `xin_employees` (
     `is_logged_in`, `online_status`, `fixed_header`, 
     `compact_sidebar`, `boxed_wrapper`, `leave_categories`, `created_at`
 ) VALUES
--- User 1: test1@test.com / admin / test123
 (100, 'admin001', 1, 'Test', 'Admin', 'admin', 'test1@test.com', 
  '$2y$12$OIbneZbW12PufunCwz1xEekd6ilPFj218eR.WfoNazJ6AUgr10F3G', 
  '1990-01-01', 'Male', 0, 1, 1, 8, 9, 1, 'monthly', 0, 0, 

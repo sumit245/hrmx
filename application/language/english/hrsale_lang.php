@@ -1,22 +1,23 @@
 <?php
- /**
+/**
  * NOTICE OF LICENSE
  *
- * This source file is subject to the HRSALE License
+ * This source file is subject to the HRMX-DASHANDOTS License
  * that is bundled with this package in the file license.txt.
  * It is also available through the world-wide-web at this URL:
- * http://www.hrsale.com/license.txt
+ * http://www.hrm.dashandots.com/license.txt
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
- * to hrsalesoft@gmail.com so we can send you a copy immediately.
+ * to info@dashandots.com so we can send you a copy immediately.
  *
- * @author   HRSALE
- * @author-email  hrsalesoft@gmail.com
+ * @author   HRMX-DASHANDOTS
+ * @author-email  info@dashandots.com
  * @copyright  Copyright © hrsale.com. All Rights Reserved
  */
 
-if (!defined('BASEPATH')) exit('No direct script access allowed');
-	
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
+
 // Dashboard
 $lang['dashboard_title'] = 'Dashboard';
 $lang['dashboard_main'] = 'Main';
@@ -622,7 +623,7 @@ $lang['xin_e_details_lnkdin'] = "LinkedIn";
 $lang['xin_e_details_blgr'] = "Blogger";
 
 $lang['xin_role_urole'] = 'Roles & Privileges';
-$lang['xin_role_all_menu'] = 'All Menu Access'; 
+$lang['xin_role_all_menu'] = 'All Menu Access';
 $lang['xin_role_cmenu'] = 'Custom Menu Access';
 $lang['xin_role_set'] = "Set New";
 $lang['xin_roles'] = "Roles";
