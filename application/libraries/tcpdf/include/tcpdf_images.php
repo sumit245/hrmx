@@ -49,7 +49,8 @@
  * @version 1.0.005
  * @author Nicola Asuni - info@tecnick.com
  */
-class TCPDF_IMAGES {
+class TCPDF_IMAGES
+{
 
 	/**
 	 * Array of hinheritable SVG properties.
@@ -58,7 +59,7 @@ class TCPDF_IMAGES {
 	 */
 	public static $svginheritprop = array('clip-rule', 'color', 'color-interpolation', 'color-interpolation-filters', 'color-profile', 'color-rendering', 'cursor', 'direction', 'display', 'fill', 'fill-opacity', 'fill-rule', 'font', 'font-family', 'font-size', 'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'glyph-orientation-horizontal', 'glyph-orientation-vertical', 'image-rendering', 'kerning', 'letter-spacing', 'marker', 'marker-end', 'marker-mid', 'marker-start', 'pointer-events', 'shape-rendering', 'stroke', 'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke-width', 'text-anchor', 'text-rendering', 'visibility', 'word-spacing', 'writing-mode');
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	/**
 	 * Return the image type given the file name or array returned by getimagesize() function.
@@ -68,7 +69,8 @@ class TCPDF_IMAGES {
 	 * @since 4.8.017 (2009-11-27)
 	 * @public static
 	 */
-	public static function getImageFileType($imgfile, $iminfo=array()) {
+	public static function getImageFileType($imgfile, $iminfo = array())
+	{
 		$type = '';
 		if (isset($iminfo['mime']) AND !empty($iminfo['mime'])) {
 			$mime = explode('/', $iminfo['mime']);
@@ -96,7 +98,8 @@ class TCPDF_IMAGES {
 	 * @since 4.9.016 (2010-04-20)
 	 * @public static
 	 */
-	public static function setGDImageTransparency($new_image, $image) {
+	public static function setGDImageTransparency($new_image, $image)
+	{
 		// default transparency color (white)
 		$tcol = array('red' => 255, 'green' => 255, 'blue' => 255);
 		// transparency index
@@ -121,7 +124,8 @@ class TCPDF_IMAGES {
 	 * @since 4.9.016 (2010-04-20)
 	 * @public static
 	 */
-	public static function _toPNG($image, $tempfile) {
+	public static function _toPNG($image, $tempfile)
+	{
 		// turn off interlaced mode
 		imageinterlace($image, 0);
 		// create temporary PNG image
@@ -144,7 +148,8 @@ class TCPDF_IMAGES {
 	 * return image JPEG image object.
 	 * @public static
 	 */
-	public static function _toJPEG($image, $quality, $tempfile) {
+	public static function _toJPEG($image, $quality, $tempfile)
+	{
 		imagejpeg($image, $tempfile, $quality);
 		imagedestroy($image);
 		$retvars = self::_parsejpeg($tempfile);
@@ -159,7 +164,8 @@ class TCPDF_IMAGES {
 	 * @return array structure containing the image data
 	 * @public static
 	 */
-	public static function _parsejpeg($file) {
+	public static function _parsejpeg($file)
+	{
 		// check if is a local file
 		if (!@file_exists($file)) {
 			// try to encode spaces on filename
@@ -242,14 +248,15 @@ class TCPDF_IMAGES {
 	 * @return array structure containing the image data
 	 * @public static
 	 */
-	public static function _parsepng($file) {
+	public static function _parsepng($file)
+	{
 		$f = @fopen($file, 'rb');
 		if ($f === false) {
 			// Can't open image file
 			return false;
 		}
 		//Check signature
-		if (fread($f, 8) != chr(137).'PNG'.chr(13).chr(10).chr(26).chr(10)) {
+		if (fread($f, 8) != chr(137) . 'PNG' . chr(13) . chr(10) . chr(26) . chr(10)) {
 			// Not a PNG file
 			return false;
 		}
@@ -291,7 +298,7 @@ class TCPDF_IMAGES {
 		}
 		fread($f, 4);
 		$channels = ($ct == 2 ? 3 : 1);
-		$parms = '/DecodeParms << /Predictor 15 /Colors '.$channels.' /BitsPerComponent '.$bpc.' /Columns '.$w.' >>';
+		$parms = '/DecodeParms << /Predictor 15 /Colors ' . $channels . ' /BitsPerComponent ' . $bpc . ' /Columns ' . $w . ' >>';
 		//Scan chunks looking for palette, transparency and image data
 		$pal = '';
 		$trns = '';
@@ -314,8 +321,8 @@ class TCPDF_IMAGES {
 				} else { // Indexed
 					if ($n > 0) {
 						$trns = array();
-						for ($i = 0; $i < $n; ++ $i) {
-							$trns[] = ord($t{$i});
+						for ($i = 0; $i < $n; ++$i) {
+							$trns[] = ord($t[$i]);
 						}
 					}
 				}

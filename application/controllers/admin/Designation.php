@@ -64,12 +64,10 @@ class Designation extends MY_Controller
 	{
 
 		$session = $this->session->userdata('username');
-		$data['title'] = $this->Xin_model->site_title();
-		if (!empty($session)) {
-			$this->load->view("admin/designation/designation_list", $data);
-		} else {
+		if (empty($session)) {
 			redirect('admin/');
 		}
+
 		// Datatables Variables
 		$draw = intval($this->input->get("draw"));
 		$start = intval($this->input->get("start"));
