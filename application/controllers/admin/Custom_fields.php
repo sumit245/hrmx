@@ -183,13 +183,15 @@ class Custom_fields extends MY_Controller
 			);
 			$result = $this->Custom_fields_model->add($data);
 			if ($result) {
-				foreach ($this->input->post('select_value') as $items) {
-					if ($items != '') {
-						$select_val = array(
-							'custom_field_id' => $result,
-							'select_label' => $items,
-						);
-						$this->Custom_fields_model->add_select_value($select_val);
+				if ($this->input->post('select_value')) {
+					foreach ($this->input->post('select_value') as $items) {
+						if ($items != '') {
+							$select_val = array(
+								'custom_field_id' => $result,
+								'select_label' => $items,
+							);
+							$this->Custom_fields_model->add_select_value($select_val);
+						}
 					}
 				}
 				$Return['result'] = $this->lang->line('xin_hrsale_field_added_success');

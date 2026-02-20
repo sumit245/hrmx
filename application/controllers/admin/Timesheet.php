@@ -2741,6 +2741,8 @@ class Timesheet extends MY_Controller
 			$this->output($Return);
 			exit;
 		}
+		// If not an AJAX POST with correct add_type, redirect to leave page
+		redirect('admin/timesheet/leave');
 	}
 
 	// Validate and add info in database
@@ -3339,8 +3341,8 @@ class Timesheet extends MY_Controller
 			} else if ($this->input->post('clock_in') === '') {
 				$Return['error'] = $this->lang->line('xin_error_attendance_in_time');
 			} /*else if($this->input->post('clock_out')==='') {
-			  $Return['error'] = "The office Out Time field is required.";
-		  }*/
+			 $Return['error'] = "The office Out Time field is required.";
+		 }*/
 
 			if ($Return['error'] != '') {
 				$this->output($Return);

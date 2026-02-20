@@ -259,6 +259,8 @@ class Events extends MY_Controller
 			$this->output($Return);
 			exit;
 		}
+		// If not an AJAX POST with correct add_type, redirect to events page
+		redirect('admin/events');
 	}
 
 	// Validate and add info in database
