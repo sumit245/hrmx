@@ -7,7 +7,7 @@ if (isset($_GET['jd']) && isset($_GET['is_ajax']) && $_GET['data'] == 'event') {
   $leave_categories = !is_null($user) ? $user[0]->leave_categories : '';
   $leaave_cat = get_employee_leave_category($leave_categories, $session['user_id']);
   // If no employee-specific leave categories assigned, fall back to all leave types
-  if(empty($leaave_cat)) {
+  if (empty($leaave_cat)) {
     $leaave_cat = $all_leave_types;
   }
   $ecompany_id = !is_null($user_info) ? $user_info[0]->company_id : '';
@@ -17,7 +17,8 @@ if (isset($_GET['jd']) && isset($_GET['is_ajax']) && $_GET['data'] == 'event') {
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span>
     </button>
     <h4 class="modal-title" id="edit-modal-data"><?php echo $this->lang->line('xin_add_new'); ?>
-      <?php echo $this->lang->line('left_leave'); ?></h4>
+      <?php echo $this->lang->line('left_leave'); ?>
+    </h4>
   </div>
   <?php $attributes = array('name' => 'add_leave', 'id' => 'xin-form', 'autocomplete' => 'off', 'class' => 'm-b-1'); ?>
   <?php $hidden = array('user_id' => $session['user_id'], 'add_type' => 'leave'); ?>
@@ -75,8 +76,8 @@ if (isset($_GET['jd']) && isset($_GET['is_ajax']) && $_GET['data'] == 'event') {
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="end_date"><?php echo $this->lang->line('xin_end_date'); ?></label>
-                  <input class="form-control edate" placeholder="<?php echo $this->lang->line('xin_end_date'); ?>" readonly
-                    name="end_date" type="text" value="<?php echo $_GET['event_date']; ?>" id="end_date">
+                  <input class="form-control edate" placeholder="<?php echo $this->lang->line('xin_end_date'); ?>"
+                    readonly name="end_date" type="text" value="<?php echo $_GET['event_date']; ?>" id="end_date">
                 </div>
               </div>
             </div>
@@ -88,7 +89,8 @@ if (isset($_GET['jd']) && isset($_GET['is_ajax']) && $_GET['data'] == 'event') {
                     <select class="form-control" name="employee_id" data-plugin="select_hrm"
                       data-placeholder="<?php echo $this->lang->line('xin_choose_an_employee'); ?>">
                       <option value="<?php echo $session['user_id']; ?>" selected>
-                        <?php echo $user_info[0]->first_name . ' ' . $user_info[0]->last_name; ?></option>
+                        <?php echo $user_info[0]->first_name . ' ' . $user_info[0]->last_name; ?>
+                      </option>
                     </select>
                   <?php } else { ?>
                     <select class="form-control" name="employee_id" data-plugin="select_hrm"
@@ -123,8 +125,8 @@ if (isset($_GET['jd']) && isset($_GET['is_ajax']) && $_GET['data'] == 'event') {
   <?php echo form_close(); ?>
   <script type="application/javascript">
     $(document).ready(function () {
-      $('[data-plugin="select_hrm"]').select2($(this).attr('data-options'));
-      $('[data-plugin="select_hrm"]').select2({ width: '100%' });
+      var $modal = $('.view-modal-data');
+      $('[data-plugin="select_hrm"]').select2({ width: '100%', dropdownParent: $modal });
       try {
         $('#remarks').trumbowyg({
           btns: [
@@ -135,7 +137,7 @@ if (isset($_GET['jd']) && isset($_GET['is_ajax']) && $_GET['data'] == 'event') {
           ],
           autogrowOnEnter: true
         });
-      } catch(e) { }
+      } catch (e) { }
       jQuery("#aj_company").change(function () {
         jQuery.get(site_url + "timesheet/get_update_employees/" + jQuery(this).val(), function (data, status) {
           jQuery('#employee_ajax').html(data);
