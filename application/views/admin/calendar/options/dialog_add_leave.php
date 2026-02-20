@@ -6,6 +6,10 @@ if (isset($_GET['jd']) && isset($_GET['is_ajax']) && $_GET['data'] == 'event') {
   $user = $this->Xin_model->read_employee_info($session['user_id']);
   $leave_categories = !is_null($user) ? $user[0]->leave_categories : '';
   $leaave_cat = get_employee_leave_category($leave_categories, $session['user_id']);
+  // If no employee-specific leave categories assigned, fall back to all leave types
+  if(empty($leaave_cat)) {
+    $leaave_cat = $all_leave_types;
+  }
   $ecompany_id = !is_null($user_info) ? $user_info[0]->company_id : '';
   ?>
 

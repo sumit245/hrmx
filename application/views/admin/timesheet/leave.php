@@ -10,6 +10,9 @@
   <?php $leave_categories = $user[0]->leave_categories; ?>
   <?php $user_info = $this->Xin_model->read_user_info($session['user_id']); ?>
   <?php $leaave_cat = get_employee_leave_category($leave_categories, $session['user_id']); ?>
+  <?php if (empty($leaave_cat)) {
+    $leaave_cat = $all_leave_types;
+  } ?>
   <div class="box mb-4 <?php echo $get_animate; ?>">
     <div id="accordion">
       <div class="box-header with-border">
@@ -81,7 +84,8 @@
                               <option value=""></option>
                               <?php foreach ($get_all_companies as $company) { ?>
                                 <?php if ($ecompany_id == $company->company_id): ?>
-                                  <option value="<?php echo $company->company_id ?>" selected><?php echo $company->name ?></option>
+                                  <option value="<?php echo $company->company_id ?>" selected><?php echo $company->name ?>
+                                  </option>
                                 <?php endif; ?>
                               <?php } ?>
                             </select>
@@ -96,7 +100,8 @@
                             <select class="form-control" name="employee_id" id="employee_id" data-plugin="select_hrm"
                               data-placeholder="<?php echo $this->lang->line('xin_choose_an_employee'); ?>">
                               <option value="<?php echo $session['user_id']; ?>" selected>
-                                <?php echo $user_info[0]->first_name . ' ' . $user_info[0]->last_name; ?></option>
+                                <?php echo $user_info[0]->first_name . ' ' . $user_info[0]->last_name; ?>
+                              </option>
                             </select>
                           <?php } else { ?>
                             <select disabled="disabled" class="form-control" name="employee_id" id="employee_id"
@@ -140,7 +145,8 @@
 <?php } ?>
 <div class="box <?php echo $get_animate; ?>">
   <div class="box-header with-border">
-    <h3 class="box-title"><?php echo $this->lang->line('xin_list_all'); ?> <?php echo $this->lang->line('left_leave'); ?>
+    <h3 class="box-title"><?php echo $this->lang->line('xin_list_all'); ?>
+      <?php echo $this->lang->line('left_leave'); ?>
     </h3>
   </div>
   <div class="box-body">
