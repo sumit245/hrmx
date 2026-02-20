@@ -125,15 +125,17 @@ if (isset($_GET['jd']) && isset($_GET['is_ajax']) && $_GET['data'] == 'event') {
     $(document).ready(function () {
       $('[data-plugin="select_hrm"]').select2($(this).attr('data-options'));
       $('[data-plugin="select_hrm"]').select2({ width: '100%' });
-      $('#remarks').trumbowyg({
-        btns: [
-          ['formatting'],
-          'btnGrp-semantic',
-          ['superscript', 'subscript'],
-          ['removeformat'],
-        ],
-        autogrowOnEnter: true
-      });
+      try {
+        $('#remarks').trumbowyg({
+          btns: [
+            ['formatting'],
+            'btnGrp-semantic',
+            ['superscript', 'subscript'],
+            ['removeformat'],
+          ],
+          autogrowOnEnter: true
+        });
+      } catch(e) { }
       jQuery("#aj_company").change(function () {
         jQuery.get(site_url + "timesheet/get_update_employees/" + jQuery(this).val(), function (data, status) {
           jQuery('#employee_ajax').html(data);

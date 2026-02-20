@@ -17,7 +17,7 @@ $(document).ready(function() {
 			jQuery('#employee_ajax').html(data);
 		});
 	});
-	$('#remarks').trumbowyg();
+	try { $('#remarks').trumbowyg(); } catch(e) { }
 	
 	// Date
 	$('.date').datepicker({
